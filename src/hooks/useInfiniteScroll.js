@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { STORY_INCREMENT, MAX_STORIES } from "../constants/index.js";
+import { useState, useEffect } from 'react';
+import { STORY_INCREMENT, MAX_STORIES } from '../constants';
+import { debounce } from '../utils/debounce';
 
 export const useInfiniteScroll = () => {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(STORY_INCREMENT);
 
-  const handleScroll = () => {
+  const handleScroll = debounce(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
         document.documentElement.offsetHeight ||
@@ -15,7 +16,7 @@ export const useInfiniteScroll = () => {
     }
 
     setLoading(true);
-  };
+  }, 500);
 
   useEffect(() => {
     if (!loading) return;
@@ -25,13 +26,13 @@ export const useInfiniteScroll = () => {
     } else {
       setCount(count + STORY_INCREMENT);
     }
+
+    setLoading(false);
   }, [loading]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return { count };
