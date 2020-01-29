@@ -1,5 +1,4 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { render, cleanup, waitForElement } from '@testing-library/react';
 import { App } from '../App';
 import { storyIds, singularStory } from '../fixtures/index';
